@@ -35,7 +35,9 @@ jobs:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+    env:
+      NAME: codelens-golang-navigate-${{ github.ref_name }}.vsix
     steps:
       - uses: actions/checkout@v5
       - uses: pnpm/action-setup@v4
@@ -58,19 +60,8 @@ jobs:
           extensionFile: ${{ steps.publish-open-vsx.outputs.vsixPath }}
       - uses: actions/upload-artifact@v5
         with:
-          name: codelens-golang-navigate-${{ github.ref_name }}.vsix
+          name: ${{ env.NAME }}
           path: ${{ steps.publish-open-vsx.outputs.vsixPath }}
-
-  release:
-    needs: publish
-    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      NAME: codelens-golang-navigate-${{ github.ref_name }}.vsix
-    steps:
-      - uses: actions/checkout@v5
       - run: mv ${{ steps.publish-open-vsx.outputs.vsixPath }} ${{ runner.temp }}/${{ env.NAME }}
       - uses: softprops/action-gh-release@v2
         with:
