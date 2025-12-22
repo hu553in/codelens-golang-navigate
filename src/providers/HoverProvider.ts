@@ -4,11 +4,11 @@ import { getConfig } from '../config';
 import { Logger } from '../logger';
 import { SymbolService } from '../symbols';
 
-function commandUri(command: string, args: JumpArgs): vscode.Uri {
+export function commandUri(command: string, args: JumpArgs): vscode.Uri {
   return vscode.Uri.parse(`command:${command}?${encodeURIComponent(JSON.stringify(args))}`);
 }
 
-function hoverLinksMarkdown(args: JumpArgs): vscode.MarkdownString {
+export function hoverLinksMarkdown(args: JumpArgs): vscode.MarkdownString {
   const md = new vscode.MarkdownString(undefined, true);
   md.isTrusted = true;
 
@@ -20,7 +20,7 @@ function hoverLinksMarkdown(args: JumpArgs): vscode.MarkdownString {
   return md;
 }
 
-function rangeSize(r: vscode.Range): number {
+export function rangeSize(r: vscode.Range): number {
   return (r.end.line - r.start.line) * 10000 + (r.end.character - r.start.character);
 }
 

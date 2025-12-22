@@ -49,12 +49,12 @@
         "codelensGolangNavigate.enableCodeLensActions": {
           "type": "boolean",
           "default": true,
-          "description": "Show CodeLens actions (Def/Type/Impl/Refs) above Go symbols."
+          "description": "Show CodeLens actions above Go symbols."
         },
         "codelensGolangNavigate.enableHoverLinks": {
           "type": "boolean",
           "default": true,
-          "description": "Show trusted hover links (Def/Type/Impl/Refs) when hovering a Go symbol."
+          "description": "Show trusted hover links when hovering a Go symbol."
         },
         "codelensGolangNavigate.logLevel": {
           "type": "string",
@@ -82,45 +82,54 @@
     },
     "commands": [
       {
-        "command": "codelensGolangNavigate.goToDefinitionAt",
-        "title": "Golang Navigate: Go to Definition"
+        "command": "codelensGolangNavigate.definition",
+        "title": "codelens-golang-navigate: Definition"
       },
       {
-        "command": "codelensGolangNavigate.goToTypeDefinitionAt",
-        "title": "Golang Navigate: Go to Type Definition"
+        "command": "codelensGolangNavigate.typeDefinition",
+        "title": "codelens-golang-navigate: Type definition"
       },
       {
-        "command": "codelensGolangNavigate.goToImplementationAt",
-        "title": "Golang Navigate: Go to Implementations"
+        "command": "codelensGolangNavigate.implementations",
+        "title": "codelens-golang-navigate: Implementations"
       },
       {
-        "command": "codelensGolangNavigate.goToReferencesAt",
-        "title": "Golang Navigate: Go to References"
+        "command": "codelensGolangNavigate.typeHierarchy",
+        "title": "codelens-golang-navigate: Type hierarchy"
+      },
+      {
+        "command": "codelensGolangNavigate.callers",
+        "title": "codelens-golang-navigate: Callers"
+      },
+      {
+        "command": "codelensGolangNavigate.references",
+        "title": "codelens-golang-navigate: References"
       }
     ]
   },
   "scripts": {
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
+    "prepare": "husky",
     "pretest": "pnpm run compile",
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint --fix . && prettier --write .",
-    "test": "vscode-test",
-    "check": "pnpm run lint && pnpm run test",
-    "check:fix": "pnpm run lint:fix && pnpm run test",
+    "test": "vscode-test --coverage --coverage-reporter json-summary --coverage-reporter text --coverage-reporter html",
+    "coverage": "jq -e '.total.lines.pct >= 90 and .total.functions.pct >= 90 and .total.branches.pct >= 90 and .total.statements.pct >= 90' coverage/coverage-summary.json",
+    "check": "pnpm run lint && pnpm run test && pnpm run coverage",
+    "check:fix": "pnpm run lint:fix && pnpm run test && pnpm run coverage",
     "release:patch": "pnpm version patch -m \"chore(release): %s\"",
     "release:minor": "pnpm version minor -m \"chore(release): %s\"",
     "release:major": "pnpm version major -m \"chore(release): %s\"",
-    "preversion": "./is-clean-main-branch.sh && pnpm run test",
-    "postversion": "git push origin main --follow-tags",
-    "prepare": "husky"
+    "preversion": "./is-clean-main-branch.sh && pnpm run test && pnpm run coverage",
+    "postversion": "git push origin main --follow-tags"
   },
   "lint-staged": {
     "*.{ts,js,json,yaml,yml}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{md}": [
+    "*.md": [
       "prettier --write"
     ]
   },

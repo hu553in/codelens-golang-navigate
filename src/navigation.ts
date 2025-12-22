@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { JumpArgs } from './commands';
 import { Logger } from './logger';
 
-function isValidArgs(args: unknown): args is JumpArgs {
+export function isValidArgs(args: unknown): args is JumpArgs {
   if (!args || typeof args !== 'object') return false;
   const a = args as Record<string, unknown>;
   return (

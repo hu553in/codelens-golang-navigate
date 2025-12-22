@@ -6,24 +6,34 @@ export type JumpArgs = {
 
 export const COMMANDS = [
   {
-    title: 'Def',
-    command: 'codelensGolangNavigate.goToDefinitionAt',
+    title: '🔍 Definition',
+    command: 'codelensGolangNavigate.definition',
     editorAction: 'editor.action.revealDefinition',
   },
   {
-    title: 'Type',
-    command: 'codelensGolangNavigate.goToTypeDefinitionAt',
+    title: '🏷️ Type definition',
+    command: 'codelensGolangNavigate.typeDefinition',
     editorAction: 'editor.action.goToTypeDefinition',
   },
   {
-    title: 'Impl',
-    command: 'codelensGolangNavigate.goToImplementationAt',
-    editorAction: 'editor.action.goToImplementation',
+    title: '⚙️ Implementations',
+    command: 'codelensGolangNavigate.implementations',
+    editorAction: 'editor.action.references-view.findImplementations',
   },
   {
-    title: 'Refs',
-    command: 'codelensGolangNavigate.goToReferencesAt',
-    editorAction: 'editor.action.referenceSearch.trigger',
+    title: '🏗️ Type hierarchy',
+    command: 'codelensGolangNavigate.typeHierarchy',
+    editorAction: 'editor.action.references-view.showTypeHierarchy',
+  },
+  {
+    title: '📞 Callers',
+    command: 'codelensGolangNavigate.callers',
+    editorAction: 'editor.action.references-view.showCallHierarchy',
+  },
+  {
+    title: '🔗 References',
+    command: 'codelensGolangNavigate.references',
+    editorAction: 'editor.action.references-view.findReferences',
   },
 ] as const;
 
