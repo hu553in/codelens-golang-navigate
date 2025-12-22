@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - "**"
+  pull_request:
+    branches:
+      - "**"
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25
+      - uses: pnpm/action-setup@v4
+      - run: pnpm i --frozen-lockfile
+      - run: pnpm run pretest
+      - run: pnpm run test
+
+  publish:
+    needs: check
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 25
+      - uses: pnpm/action-setup@v4
+      - run: pnpm i --frozen-lockfile
+      - uses: HaaLeo/publish-vscode-extension@v2
+        id: publish-open-vsx
+        with:
+          pat: ${{ secrets.TOKEN_OPEN_VSX }}
+      - uses: HaaLeo/publish-vscode-extension@v2
+        with:
+          pat: ${{ secrets.TOKEN_VS_MARKETPLACE }}
+          registryUrl: https://marketplace.visualstudio.com
+          extensionFile: ${{ steps.publish-open-vsx.outputs.vsixPath }}
+      - uses: actions/upload-artifact@v5
+        with:
+          name: codelens-golang-navigate-${{ github.sha }}.vsix
+          path: ${{ steps.publish-open-vsx.outputs.vsixPath }}

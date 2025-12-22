@@ -1,0 +1,72 @@
+{
+  "name": "codelens-golang-navigate",
+  "displayName": "codelens-golang-navigate",
+  "description": "A Visual Studio Code extension which adds CodeLens actions and hover links for navigating through Golang code.",
+  "version": "1.0.0",
+  "engines": {
+    "vscode": "^1.107.0"
+  },
+  "publisher": "hu553in",
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "extensionDependencies": [
+    "golang.go"
+  ],
+  "activationEvents": [
+    "onLanguage:go"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "codelensGolangNavigate",
+      "properties": {
+        "codelensGolangNavigate.enableCodeLensActions": {
+          "type": "boolean",
+          "default": true
+        },
+        "codelensGolangNavigate.enableHoverLinks": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "codelensGolangNavigate.goToDefinitionAt",
+        "title": "Go to definition"
+      },
+      {
+        "command": "codelensGolangNavigate.goToTypeDefinitionAt",
+        "title": "Go to type definition"
+      },
+      {
+        "command": "codelensGolangNavigate.goToImplementationAt",
+        "title": "Go to implementations"
+      },
+      {
+        "command": "codelensGolangNavigate.goToReferencesAt",
+        "title": "Go to references"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.107.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "25.x",
+    "typescript-eslint": "^8.48.1",
+    "eslint": "^9.39.1",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
