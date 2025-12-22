@@ -1,5 +1,9 @@
 # codelens-golang-navigate
 
+[![CI](https://github.com/hu553in/codelens-golang-navigate/actions/workflows/ci.yml/badge.svg)](https://github.com/hu553in/codelens-golang-navigate/actions/workflows/ci.yml)
+
+- [License](./LICENSE)
+
 A Visual Studio Code extension which adds CodeLens actions and hover links for navigating through Golang code.
 
 ## Features

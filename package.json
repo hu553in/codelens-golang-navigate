@@ -7,6 +7,29 @@
     "vscode": "^1.107.0"
   },
   "publisher": "hu553in",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hu553in/codelens-golang-navigate"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Ruslan Khasanshin",
+    "email": "r.m.khasanshin@gmail.com",
+    "url": "https://github.com/hu553in"
+  },
+  "bugs": {
+    "url": "https://github.com/hu553in/codelens-golang-navigate/issues",
+    "email": "r.m.khasanshin@gmail.com"
+  },
+  "homepage": "https://github.com/hu553in/codelens-golang-navigate",
+  "keywords": [
+    "golang",
+    "vscode",
+    "cursor",
+    "codelens",
+    "hover",
+    "navigation"
+  ],
   "categories": [
     "Programming Languages",
     "Other"
