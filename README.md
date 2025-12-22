@@ -18,10 +18,9 @@ A Visual Studio Code extension that adds **CodeLens actions** and **trusted hove
 
 For Go symbols, the extension shows CodeLens actions:
 
-- **Def**
-- **Type**
-- **Impl**
-- **Refs**
+```
+Def | Type | Impl | Refs
+```
 
 CodeLens is:
 
@@ -33,7 +32,7 @@ CodeLens is:
 When hovering a Go symbol, you get clickable links:
 
 ```
-Def · Type · Impl · Refs
+Def | Type | Impl | Refs
 ```
 
 These links are trusted and execute the corresponding editor navigation commands.
