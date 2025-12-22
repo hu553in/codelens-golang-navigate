@@ -26,6 +26,7 @@ jobs:
           node-version: 25
           cache: 'pnpm'
       - run: pnpm i --frozen-lockfile
+      - run: pnpm run lint
       - uses: coactions/setup-xvfb@v1
         with:
           run: pnpm run test

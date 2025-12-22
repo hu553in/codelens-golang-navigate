@@ -48,39 +48,63 @@
       "properties": {
         "codelensGolangNavigate.enableCodeLensActions": {
           "type": "boolean",
-          "default": true
+          "default": true,
+          "description": "Show CodeLens actions (Def/Type/Impl/Refs) above Go symbols."
         },
         "codelensGolangNavigate.enableHoverLinks": {
           "type": "boolean",
-          "default": true
+          "default": true,
+          "description": "Show trusted hover links (Def/Type/Impl/Refs) when hovering a Go symbol."
+        },
+        "codelensGolangNavigate.logLevel": {
+          "type": "string",
+          "default": "info",
+          "enum": [
+            "error",
+            "warn",
+            "info",
+            "debug"
+          ],
+          "description": "Minimum log level written to the extension Output Channel."
+        },
+        "codelensGolangNavigate.refreshOnTyping": {
+          "type": "boolean",
+          "default": true,
+          "description": "Refresh CodeLens when the active Go file changes (typing/paste)."
+        },
+        "codelensGolangNavigate.refreshDebounceMs": {
+          "type": "number",
+          "default": 120,
+          "minimum": 0,
+          "description": "Debounce delay (ms) for refresh triggers."
         }
       }
     },
     "commands": [
       {
         "command": "codelensGolangNavigate.goToDefinitionAt",
-        "title": "Go to definition"
+        "title": "Golang Navigate: Go to Definition"
       },
       {
         "command": "codelensGolangNavigate.goToTypeDefinitionAt",
-        "title": "Go to type definition"
+        "title": "Golang Navigate: Go to Type Definition"
       },
       {
         "command": "codelensGolangNavigate.goToImplementationAt",
-        "title": "Go to implementations"
+        "title": "Golang Navigate: Go to Implementations"
       },
       {
         "command": "codelensGolangNavigate.goToReferencesAt",
-        "title": "Go to references"
+        "title": "Golang Navigate: Go to References"
       }
     ]
   },
   "scripts": {
-    "vscode:prepublish": "pnpm run compile",
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
-    "pretest": "pnpm run compile && pnpm run lint",
-    "lint": "eslint --fix && prettier --write .",
+    "pretest": "pnpm run compile",
+    "lint": "eslint . && prettier --check .",
+    "lint:fix": "eslint --fix . && prettier --write .",
     "test": "vscode-test",
     "release:patch": "pnpm version patch -m \"chore(release): %s\"",
     "release:minor": "pnpm version minor -m \"chore(release): %s\"",

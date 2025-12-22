@@ -1,3 +1,7 @@
 {
-  "recommendations": ["dbaeumer.vscode-eslint", "ms-vscode.extension-test-runner"]
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "prettier.prettier-vscode",
+    "ms-vscode.extension-test-runner"
+  ]
 }
