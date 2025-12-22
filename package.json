@@ -106,6 +106,8 @@
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint --fix . && prettier --write .",
     "test": "vscode-test",
+    "check": "pnpm run lint && pnpm run test",
+    "check:fix": "pnpm run lint:fix && pnpm run test",
     "release:patch": "pnpm version patch -m \"chore(release): %s\"",
     "release:minor": "pnpm version minor -m \"chore(release): %s\"",
     "release:major": "pnpm version major -m \"chore(release): %s\"",
