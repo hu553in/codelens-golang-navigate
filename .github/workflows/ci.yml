@@ -67,6 +67,11 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      NAME: codelens-golang-navigate-${{ github.ref_name }}.vsix
     steps:
       - uses: actions/checkout@v5
+      - run: mv ${{ steps.publish-open-vsx.outputs.vsixPath }} ${{ runner.temp }}/${{ env.NAME }}
       - uses: softprops/action-gh-release@v2
+        with:
+          files: ${{ runner.temp }}/${{ env.NAME }}
