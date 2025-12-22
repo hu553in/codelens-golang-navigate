@@ -13,7 +13,7 @@ function hoverLinksMarkdown(args: JumpArgs): vscode.MarkdownString {
   md.isTrusted = true;
 
   const links = COMMANDS.map((c) => `[${c.title}](${String(commandUri(c.command, args))})`).join(
-    ' · ',
+    ' | ',
   );
 
   md.appendMarkdown(links);
