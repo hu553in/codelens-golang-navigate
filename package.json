@@ -84,7 +84,7 @@
     "release:patch": "pnpm version patch -m \"chore(release): %s\"",
     "release:minor": "pnpm version minor -m \"chore(release): %s\"",
     "release:major": "pnpm version major -m \"chore(release): %s\"",
-    "preversion": "pnpm run test",
+    "preversion": "./is-clean-main-branch.sh && pnpm run test",
     "postversion": "git push origin main --follow-tags",
     "prepare": "husky"
   },
