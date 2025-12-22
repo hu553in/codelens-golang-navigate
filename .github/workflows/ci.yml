@@ -7,6 +7,7 @@ on:
   pull_request:
     branches:
       - "**"
+  workflow_dispatch:
 
 jobs:
   check:
@@ -18,8 +19,12 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 25
+          cache: "pnpm"
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - run: pnpm i --frozen-lockfile
+      - run: pnpm run compile
       - run: pnpm run pretest
       - run: pnpm run test
 
@@ -34,8 +39,12 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 25
+          cache: "pnpm"
       - uses: pnpm/action-setup@v4
+        with:
+          version: 10
       - run: pnpm i --frozen-lockfile
+      - run: pnpm run compile
       - uses: HaaLeo/publish-vscode-extension@v2
         id: publish-open-vsx
         with:
