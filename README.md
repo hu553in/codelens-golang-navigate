@@ -1,8 +1,8 @@
 # codelens-golang-navigate
 
 [![CI](https://github.com/hu553in/codelens-golang-navigate/actions/workflows/ci.yml/badge.svg)](https://github.com/hu553in/codelens-golang-navigate/actions/workflows/ci.yml)
-![Open VSX Version](https://img.shields.io/open-vsx/v/hu553in/codelens-golang-navigate)
-![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/hu553in.codelens-golang-navigate)
+[![Open VSX Version](https://img.shields.io/open-vsx/v/hu553in/codelens-golang-navigate)](https://open-vsx.org/extension/hu553in/codelens-golang-navigate)
+[![Visual Studio Marketplace Version](https://img.shields.io/visual-studio-marketplace/v/hu553in.codelens-golang-navigate)](marketplace.visualstudio.com/items?itemName=hu553in.codelens-golang-navigate)
 
 - [License](./LICENSE)
 - [How to contribute](./CONTRIBUTING.md)
