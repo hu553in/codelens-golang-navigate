@@ -1,6 +1,7 @@
 .vscode/**
 .vscode-test/**
 src/**
+.husky/**
 .gitignore
 .yarnrc
 **/tsconfig.json
@@ -8,3 +9,4 @@ src/**
 **/*.map
 **/*.ts
 **/.vscode-test.*
+**/.prettierrc

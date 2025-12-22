@@ -1,8 +1,12 @@
-import * as vscode from "vscode";
+import * as vscode from 'vscode';
 
 let outputChannel: vscode.OutputChannel;
 
-function log(level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG', message: string, args: Record<string, any> = {}) {
+function log(
+  level: 'INFO' | 'WARN' | 'ERROR' | 'DEBUG',
+  message: string,
+  args: Record<string, unknown> = {},
+) {
   const timestamp = new Date().toISOString();
   const formattedMessage = `[${timestamp}] [${level}] ${message} ${JSON.stringify(args, null, 2)}`;
   outputChannel.appendLine(formattedMessage);
@@ -16,31 +20,29 @@ type JumpArgs = {
 
 const commands = [
   {
-    title: "Definition",
-    command: "codelensGolangNavigate.goToDefinitionAt",
-    editorAction: "editor.action.revealDefinition"
+    title: 'Definition',
+    command: 'codelensGolangNavigate.goToDefinitionAt',
+    editorAction: 'editor.action.revealDefinition',
   },
   {
-    title: "Type",
-    command: "codelensGolangNavigate.goToTypeDefinitionAt",
-    editorAction: "editor.action.goToTypeDefinition"
+    title: 'Type',
+    command: 'codelensGolangNavigate.goToTypeDefinitionAt',
+    editorAction: 'editor.action.goToTypeDefinition',
   },
   {
-    title: "Impl",
-    command: "codelensGolangNavigate.goToImplementationAt",
-    editorAction: "editor.action.goToImplementation"
+    title: 'Impl',
+    command: 'codelensGolangNavigate.goToImplementationAt',
+    editorAction: 'editor.action.goToImplementation',
   },
   {
-    title: "Refs",
-    command: "codelensGolangNavigate.goToReferencesAt",
-    editorAction: "editor.action.referenceSearch.trigger"
-  }
+    title: 'Refs',
+    command: 'codelensGolangNavigate.goToReferencesAt',
+    editorAction: 'editor.action.referenceSearch.trigger',
+  },
 ] as const;
 
 function configValue<T>(key: string, fallback: T): T {
-  const value = vscode.workspace
-    .getConfiguration("codelensGolangNavigate")
-    .get<T>(key, fallback);
+  const value = vscode.workspace.getConfiguration('codelensGolangNavigate').get<T>(key, fallback);
 
   log('DEBUG', 'Configuration accessed', { key, value, fallback });
   return value;
@@ -58,7 +60,7 @@ async function revealAndRunCommand(args: JumpArgs, command: string) {
     editor.selection = new vscode.Selection(pos, pos);
     editor.revealRange(
       new vscode.Range(pos, pos),
-      vscode.TextEditorRevealType.InCenterIfOutsideViewport
+      vscode.TextEditorRevealType.InCenterIfOutsideViewport,
     );
 
     await vscode.commands.executeCommand(command);
@@ -71,28 +73,25 @@ async function revealAndRunCommand(args: JumpArgs, command: string) {
 }
 
 function commandUri(command: string, args: JumpArgs): vscode.Uri {
-  return vscode.Uri.parse(
-    `command:${command}?${encodeURIComponent(JSON.stringify(args))}`
-  );
+  return vscode.Uri.parse(`command:${command}?${encodeURIComponent(JSON.stringify(args))}`);
 }
 
 function hoverLinksMarkdown(args: JumpArgs): vscode.MarkdownString {
   const md = new vscode.MarkdownString(undefined, true);
   md.isTrusted = true;
-  md.appendMarkdown(commands.map((c) => `[${c.title}](${commandUri(c.command, args)}`).join(" · "));
+  md.appendMarkdown(
+    commands.map((c) => `[${c.title}](${String(commandUri(c.command, args))}`).join(' · '),
+  );
   return md;
 }
 
-async function getDocSymbols(
-  doc: vscode.TextDocument
-): Promise<vscode.DocumentSymbol[]> {
+async function getDocSymbols(doc: vscode.TextDocument): Promise<vscode.DocumentSymbol[]> {
   try {
-    const symbols = (
+    const symbols =
       (await vscode.commands.executeCommand<vscode.DocumentSymbol[]>(
-        "vscode.executeDocumentSymbolProvider",
-        doc.uri
-      )) ?? []
-    );
+        'vscode.executeDocumentSymbolProvider',
+        doc.uri,
+      )) ?? [];
 
     log('DEBUG', 'Document symbols retrieved', { symbols: symbols.length, uri: doc.uri.fsPath });
     return symbols;
@@ -103,9 +102,7 @@ async function getDocSymbols(
   }
 }
 
-function flattenSymbols(
-  symbols: vscode.DocumentSymbol[]
-): vscode.DocumentSymbol[] {
+function flattenSymbols(symbols: vscode.DocumentSymbol[]): vscode.DocumentSymbol[] {
   const out: vscode.DocumentSymbol[] = [];
   const walk = (arr: vscode.DocumentSymbol[]) => {
     for (const s of arr) {
@@ -129,12 +126,10 @@ class CodeLensProvider implements vscode.CodeLensProvider {
     this._onDidChange.fire();
   }
 
-  async provideCodeLenses(
-    document: vscode.TextDocument
-  ): Promise<vscode.CodeLens[]> {
+  async provideCodeLenses(document: vscode.TextDocument): Promise<vscode.CodeLens[]> {
     const startTime = Date.now();
 
-    if (!configValue("enableCodeLensActions", true)) {
+    if (!configValue('enableCodeLensActions', true)) {
       log('DEBUG', 'Code lenses disabled', { uri: document.uri.fsPath });
       return [];
     }
@@ -150,25 +145,35 @@ class CodeLensProvider implements vscode.CodeLensProvider {
         const args: JumpArgs = {
           uri: document.uri.toString(),
           row: p.line,
-          col: p.character
+          col: p.character,
         };
 
         for (const c of commands) {
-          lenses.push(new vscode.CodeLens(range, {
-            title: c.title,
-            command: c.command,
-            arguments: [args]
-          }));
+          lenses.push(
+            new vscode.CodeLens(range, {
+              title: c.title,
+              command: c.command,
+              arguments: [args],
+            }),
+          );
         }
       }
 
       const duration = Date.now() - startTime;
-      log('INFO', 'Code lenses generated', { lensesCount: lenses.length, uri: document.uri.fsPath, duration });
+      log('INFO', 'Code lenses generated', {
+        lensesCount: lenses.length,
+        uri: document.uri.fsPath,
+        duration,
+      });
       return lenses;
     } catch (error) {
       const duration = Date.now() - startTime;
       const errorMsg = error instanceof Error ? error.message : String(error);
-      log('ERROR', 'Code lenses generation failed', { uri: document.uri.fsPath, duration, error: errorMsg });
+      log('ERROR', 'Code lenses generation failed', {
+        uri: document.uri.fsPath,
+        duration,
+        error: errorMsg,
+      });
       return [];
     }
   }
@@ -177,11 +182,11 @@ class CodeLensProvider implements vscode.CodeLensProvider {
 class HoverProvider implements vscode.HoverProvider {
   async provideHover(
     document: vscode.TextDocument,
-    position: vscode.Position
+    position: vscode.Position,
   ): Promise<vscode.Hover | undefined> {
     const startTime = Date.now();
 
-    if (!configValue("enableHoverLinks", true)) {
+    if (!configValue('enableHoverLinks', true)) {
       log('DEBUG', 'Hover links disabled', { uri: document.uri.fsPath, position });
       return;
     }
@@ -190,23 +195,24 @@ class HoverProvider implements vscode.HoverProvider {
       const symbols = flattenSymbols(await getDocSymbols(document));
 
       const matchingSymbols = symbols.filter((s) => s.selectionRange.contains(position));
-      log('DEBUG', 'Matching symbols found', { symbolsCount: matchingSymbols.length, position, uri: document.uri.fsPath });
+      log('DEBUG', 'Matching symbols found', {
+        symbolsCount: matchingSymbols.length,
+        position,
+        uri: document.uri.fsPath,
+      });
 
-      const match = matchingSymbols
-        .sort((a, b) => {
-          const ar = a.selectionRange;
-          const br = b.selectionRange;
+      const match = matchingSymbols.sort((a, b) => {
+        const ar = a.selectionRange;
+        const br = b.selectionRange;
 
-          const aSize =
-            (ar.end.line - ar.start.line) * 10000 +
-            (ar.end.character - ar.start.character);
+        const aSize =
+          (ar.end.line - ar.start.line) * 10000 + (ar.end.character - ar.start.character);
 
-          const bSize =
-            (br.end.line - br.start.line) * 10000 +
-            (br.end.character - br.start.character);
+        const bSize =
+          (br.end.line - br.start.line) * 10000 + (br.end.character - br.start.character);
 
-          return aSize - bSize;
-        })[0];
+        return aSize - bSize;
+      })[0];
 
       if (!match) {
         log('DEBUG', 'No matching symbol found', { uri: document.uri.fsPath, position });
@@ -217,24 +223,34 @@ class HoverProvider implements vscode.HoverProvider {
       const args: JumpArgs = {
         uri: document.uri.toString(),
         row: p.line,
-        col: p.character
+        col: p.character,
       };
 
       const duration = Date.now() - startTime;
-      log('INFO', 'Hover generated', { symbol: match.name, uri: document.uri.fsPath, position, duration });
+      log('INFO', 'Hover generated', {
+        symbol: match.name,
+        uri: document.uri.fsPath,
+        position,
+        duration,
+      });
 
       return new vscode.Hover(hoverLinksMarkdown(args), match.selectionRange);
     } catch (error) {
       const duration = Date.now() - startTime;
       const errorMsg = error instanceof Error ? error.message : String(error);
-      log('ERROR', 'Hover generation failed', { uri: document.uri.fsPath, position, duration, error: errorMsg });
+      log('ERROR', 'Hover generation failed', {
+        uri: document.uri.fsPath,
+        position,
+        duration,
+        error: errorMsg,
+      });
       return;
     }
   }
 }
 
 export function activate(context: vscode.ExtensionContext) {
-  outputChannel = vscode.window.createOutputChannel("codelens-golang-navigate");
+  outputChannel = vscode.window.createOutputChannel('codelens-golang-navigate');
   log('INFO', 'Extension activated');
 
   try {
@@ -242,30 +258,29 @@ export function activate(context: vscode.ExtensionContext) {
       log('INFO', 'Registering command', { command: c });
       context.subscriptions.push(
         vscode.commands.registerCommand(c.command, (args: JumpArgs) =>
-          revealAndRunCommand(args, c.editorAction)
-        )
+          revealAndRunCommand(args, c.editorAction),
+        ),
       );
     }
 
     const provider = new CodeLensProvider();
-    const selector: vscode.DocumentSelector = [{ language: "go" }];
+    const selector: vscode.DocumentSelector = [{ language: 'go' }];
 
     log('INFO', 'Registering providers', { selector });
     context.subscriptions.push(
       vscode.languages.registerCodeLensProvider(selector, provider),
-      vscode.languages.registerHoverProvider(
-        selector,
-        new HoverProvider()
-      )
+      vscode.languages.registerHoverProvider(selector, new HoverProvider()),
     );
 
     context.subscriptions.push(
       vscode.workspace.onDidChangeConfiguration((e) => {
-        if (e.affectsConfiguration("codelensGolangNavigate")) {
-          log('INFO', 'Configuration changed, refreshing', { affectedConfiguration: "codelensGolangNavigate" });
+        if (e.affectsConfiguration('codelensGolangNavigate')) {
+          log('INFO', 'Configuration changed, refreshing', {
+            affectedConfiguration: 'codelensGolangNavigate',
+          });
           provider.refresh();
         }
-      })
+      }),
     );
 
     log('INFO', 'Extension activation completed');

@@ -79,17 +79,40 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "pretest": "pnpm run compile && pnpm run lint",
-    "lint": "eslint src",
-    "test": "vscode-test"
+    "lint": "eslint --fix && prettier --write .",
+    "test": "vscode-test",
+    "release:patch": "pnpm version patch -m \"chore(release): %s\"",
+    "release:minor": "pnpm version minor -m \"chore(release): %s\"",
+    "release:major": "pnpm version major -m \"chore(release): %s\"",
+    "preversion": "pnpm run test",
+    "postversion": "git push origin main --follow-tags",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{ts,js,json,yaml,yml}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{md}": [
+      "prettier --write"
+    ]
   },
   "devDependencies": {
-    "@types/vscode": "^1.107.0",
+    "@eslint/js": "^9.39.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "25.x",
-    "typescript-eslint": "^8.48.1",
-    "eslint": "^9.39.1",
-    "typescript": "^5.9.3",
+    "@types/vscode": "^1.107.0",
     "@vscode/test-cli": "^0.0.12",
-    "@vscode/test-electron": "^2.5.2"
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.39.1",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.7.4",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.48.1"
   }
 }

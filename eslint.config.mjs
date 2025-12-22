@@ -1,27 +1,26 @@
-import typescriptEslint from "typescript-eslint";
+import { default as eslint, default as js } from '@eslint/js';
+import pluginPrettierRecommended from 'eslint-plugin-prettier/recommended';
+import { defineConfig } from 'eslint/config';
+import tseslint from 'typescript-eslint';
 
-export default [{
-    files: ["**/*.ts"],
-}, {
-    plugins: {
-        "@typescript-eslint": typescriptEslint.plugin,
-    },
-
+export default defineConfig(
+  { ignores: ['dist', 'node_modules', 'out', '.vscode-test', 'pnpm-lock.yaml', '.husky'] },
+  {
+    extends: [
+      js.configs.recommended,
+      eslint.configs.recommended,
+      tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.stylisticTypeCheckedOnly,
+      pluginPrettierRecommended,
+    ],
+    files: ['src/**/*.ts'],
     languageOptions: {
-        parser: typescriptEslint.parser,
-        ecmaVersion: 2022,
-        sourceType: "module",
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      parserOptions: {
+        project: ['./tsconfig.json'],
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
-
-    rules: {
-        "@typescript-eslint/naming-convention": ["warn", {
-            selector: "import",
-            format: ["camelCase", "PascalCase"],
-        }],
-
-        curly: "warn",
-        eqeqeq: "warn",
-        "no-throw-literal": "warn",
-        semi: "warn",
-    },
-}];
+  },
+);
