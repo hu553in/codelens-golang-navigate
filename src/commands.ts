@@ -18,22 +18,22 @@ export const COMMANDS = [
   {
     title: '⚙️ Implementations',
     command: 'codelensGolangNavigate.implementations',
-    editorAction: 'editor.action.references-view.findImplementations',
+    editorAction: 'references-view.findImplementations',
   },
   {
     title: '🏗️ Type hierarchy',
     command: 'codelensGolangNavigate.typeHierarchy',
-    editorAction: 'editor.action.references-view.showTypeHierarchy',
+    editorAction: 'references-view.showTypeHierarchy',
   },
   {
     title: '📞 Callers',
     command: 'codelensGolangNavigate.callers',
-    editorAction: 'editor.action.references-view.showCallHierarchy',
+    editorAction: 'references-view.showCallHierarchy',
   },
   {
     title: '🔗 References',
     command: 'codelensGolangNavigate.references',
-    editorAction: 'editor.action.references-view.findReferences',
+    editorAction: 'references-view.findReferences',
   },
 ] as const;
 

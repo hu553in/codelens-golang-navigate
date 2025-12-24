@@ -46,10 +46,10 @@ suite('Commands Tests', () => {
     const expectedActions = [
       'editor.action.revealDefinition',
       'editor.action.goToTypeDefinition',
-      'editor.action.references-view.findImplementations',
-      'editor.action.references-view.showTypeHierarchy',
-      'editor.action.references-view.showCallHierarchy',
-      'editor.action.references-view.findReferences',
+      'references-view.findImplementations',
+      'references-view.showTypeHierarchy',
+      'references-view.showCallHierarchy',
+      'references-view.findReferences',
     ];
 
     expectedActions.forEach((expected) => {
