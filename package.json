@@ -121,7 +121,7 @@
     "release:patch": "pnpm version patch -m \"chore(release): %s\"",
     "release:minor": "pnpm version minor -m \"chore(release): %s\"",
     "release:major": "pnpm version major -m \"chore(release): %s\"",
-    "preversion": "./scripts/verify-clean-main-branch.sh && pnpm run test && pnpm run coverage",
+    "preversion": "./scripts/verify-clean-main-branch.sh && pnpm run check",
     "postversion": "git push origin main --follow-tags"
   },
   "lint-staged": {

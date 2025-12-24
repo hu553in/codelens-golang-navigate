@@ -64,6 +64,11 @@ jobs:
           name: ${{ env.NAME }}
           path: ${{ steps.publish-open-vsx.outputs.vsixPath }}
       - run: mv ${{ steps.publish-open-vsx.outputs.vsixPath }} ${{ runner.temp }}/${{ env.NAME }}
+      - uses: loopwerk/tag-changelog@v1
+        id: changelog
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: softprops/action-gh-release@v2
         with:
           files: ${{ runner.temp }}/${{ env.NAME }}
+          body: ${{ steps.changelog.outputs.changes }}
