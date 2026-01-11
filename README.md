@@ -8,7 +8,10 @@
 - [How to contribute](./CONTRIBUTING.md)
 - [Code of conduct](./CODE_OF_CONDUCT.md)
 
-A Visual Studio Code extension that adds **CodeLens actions** and **trusted hover links** for fast navigation in Golang code.
+A Visual Studio Code extension that adds **CodeLens actions** and **trusted hover links** for fast,
+low-friction navigation in Go code.
+
+The extension is designed to feel native, stay out of the way, and scale well on large Go projects.
 
 ---
 
@@ -16,56 +19,59 @@ A Visual Studio Code extension that adds **CodeLens actions** and **trusted hove
 
 ### CodeLens navigation
 
-For Go symbols, the extension shows CodeLens actions:
+For Go symbols, the extension displays CodeLens actions directly above declarations:
 
 ```
-🔍 Definition | 🏷️ Type definition | ⚙️ Implementations | 🏗️ Type hierarchy | 📞 Callers | 🔗 References
+🔍 Definition · 🏷️ Type definition · ⚙️ Implementations · 🏗️ Type hierarchy · 📞 Callers · 🔗 References
 ```
 
-CodeLens is:
+CodeLens behavior:
 
-- Automatically refreshed while typing (debounced)
-- Powered by `gopls` via VS Code's symbol provider
+- Automatically refreshed while typing (with debouncing)
+- Powered by `gopls` through Visual Studio Code document symbol provider
+- Updated only for the currently active Go editor
 
 ### Hover navigation
 
-When hovering a Go symbol, you get clickable links:
+When hovering over a Go symbol, the same navigation actions appear as clickable links:
 
 ```
-🔍 Definition | 🏷️ Type definition | ⚙️ Implementations | 🏗️ Type hierarchy | 📞 Callers | 🔗 References
+🔍 Definition · 🏷️ Type definition · ⚙️ Implementations · 🏗️ Type hierarchy · 📞 Callers · 🔗 References
 ```
 
-These links are trusted and execute the corresponding editor navigation commands.
+Hover links are trusted and invoke the corresponding built-in Visual Studio Code navigation commands.
 
 ### Performance-focused
 
 - Document symbols are cached per file version
-- CodeLens refresh is debounced (configurable)
-- Refresh happens **only for the active Go editor**
+- CodeLens refresh is debounced and configurable
+- No background processing for inactive editors
 
 ---
 
 ## Prerequisites
 
-- [Go installed](https://go.dev/doc/install)
-- [Go VS Code extension](https://marketplace.visualstudio.com/items?itemName=golang.go)
-- [`gopls` language server](https://github.com/golang/tools/tree/master/gopls)
+- Go installed: https://go.dev/doc/install
+- Go extension for Visual Studio Code: https://marketplace.visualstudio.com/items?itemName=golang.go
+- `gopls` language server: https://github.com/golang/tools/tree/master/gopls
 
 ---
 
 ## Configuration
 
-All settings are under the `codelensGolangNavigate` namespace.
+All settings are available under the `codelensGolangNavigate` namespace.
 
-| Option                                         | Description                                          | Default |
-| ---------------------------------------------- | ---------------------------------------------------- | ------- |
-| `codelensGolangNavigate.enableCodeLensActions` | Enable/disable CodeLens actions                      | `true`  |
-| `codelensGolangNavigate.enableHoverLinks`      | Enable/disable hover links                           | `true`  |
-| `codelensGolangNavigate.refreshOnTyping`       | Refresh CodeLens when typing in the active Go file   | `true`  |
-| `codelensGolangNavigate.refreshDebounceMs`     | Debounce delay (ms) for refresh-on-typing            | `120`   |
-| `codelensGolangNavigate.logLevel`              | Minimum log level (`error`, `warn`, `info`, `debug`) | `info`  |
+| Option                                         | Description                                         | Default |
+| ---------------------------------------------- | --------------------------------------------------- | ------- |
+| `codelensGolangNavigate.enableCodeLensActions` | Enable or disable CodeLens actions                  | true    |
+| `codelensGolangNavigate.enableHoverLinks`      | Enable or disable hover navigation links            | true    |
+| `codelensGolangNavigate.refreshOnTyping`       | Refresh CodeLens while typing in the active Go file | true    |
+| `codelensGolangNavigate.refreshDebounceMs`     | Debounce delay (ms) for refresh-on-typing           | 120     |
+| `codelensGolangNavigate.logLevel`              | Minimum log level: error, warn, info, debug         | info    |
 
-### Example `settings.json`
+### Example settings
+
+Add the following to your Visual Studio Code `settings.json`:
 
 ```json
 {
