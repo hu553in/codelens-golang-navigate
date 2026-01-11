@@ -17,7 +17,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: dcarbone/install-jq-action@v3
       - uses: pnpm/action-setup@v4
         with:
@@ -29,7 +29,7 @@ jobs:
       - run: pnpm i --frozen-lockfile
       - uses: coactions/setup-xvfb@v1
         with:
-          run: pnpm run check
+          run: pnpm check
 
   publish:
     needs: check
@@ -40,7 +40,7 @@ jobs:
     env:
       NAME: codelens-golang-navigate-${{ github.ref_name }}.vsix
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: pnpm/action-setup@v4
         with:
           version: 10
@@ -49,7 +49,7 @@ jobs:
           node-version: 25
           cache: 'pnpm'
       - run: pnpm i --frozen-lockfile
-      - run: pnpm run compile
+      - run: pnpm compile
       - uses: HaaLeo/publish-vscode-extension@v2
         id: publish-open-vsx
         with:
@@ -59,7 +59,7 @@ jobs:
           pat: ${{ secrets.TOKEN_VS_MARKETPLACE }}
           registryUrl: https://marketplace.visualstudio.com
           extensionFile: ${{ steps.publish-open-vsx.outputs.vsixPath }}
-      - uses: actions/upload-artifact@v5
+      - uses: actions/upload-artifact@v6
         with:
           name: ${{ env.NAME }}
           path: ${{ steps.publish-open-vsx.outputs.vsixPath }}

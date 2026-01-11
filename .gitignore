@@ -1,6 +1,6 @@
-out
-dist
 node_modules
+dist
+out
 .vscode-test
-*.vsix
 coverage
+*.vsix
